@@ -1,0 +1,14 @@
+targets:
+  $default:
+    builders:
+      generators|annotations:
+        enabled: true
+
+builders:
+  generators:
+    import: "package:good_enums/good_enums.dart"
+    builder_factories: ["goodEnum"]
+    build_extensions: { ".dart": [".g.dart"] }
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
