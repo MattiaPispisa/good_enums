@@ -17,8 +17,6 @@ class GoodEnumsGenerator extends GeneratorForAnnotation<GoodEnum> {
     final visitor = EnumVisitor();
     element.visitChildren(visitor);
 
-    final compareMethodPrefix = annotation.read('prefix').stringValue;
-
     final extensionBuffer = StringBuffer();
 
     // start the extension
@@ -26,6 +24,8 @@ class GoodEnumsGenerator extends GeneratorForAnnotation<GoodEnum> {
     extensionBuffer.writeln('extension Good${visitor.className} on ${visitor.className} {');
 
     // compare methods
+    final compareMethodPrefix = annotation.read('prefix').stringValue;
+
     for (final enumElement in visitor.elements) {
       extensionBuffer.writeln('bool $compareMethodPrefix${enumElement._capitalize()}() {');
       extensionBuffer.writeln('  return this == ${visitor.className}.$enumElement;');
@@ -33,21 +33,51 @@ class GoodEnumsGenerator extends GeneratorForAnnotation<GoodEnum> {
     }
 
     // map method
-    extensionBuffer.writeln('TResult map<TResult>({');
-    for (final enumElement in visitor.elements) {
-      extensionBuffer.writeln('required TResult Function() $enumElement,');
-    }
-    extensionBuffer.writeln('}) {');
+    final canMap = annotation.read('enableMap').boolValue;
+    if (canMap) {
+      extensionBuffer.writeln('TResult map<TResult>({');
+      for (final enumElement in visitor.elements) {
+        extensionBuffer.writeln('required TResult Function() $enumElement,');
+      }
+      extensionBuffer.writeln('}) {');
 
-    // enum switch
-    extensionBuffer.writeln(' switch (this) {');
-    for (final enumElement in visitor.elements) {
-      extensionBuffer.writeln('   case ${visitor.className}.$enumElement:');
-      extensionBuffer.writeln('   return ${enumElement}();');
-    }
-    extensionBuffer.writeln('   }');
+      // enum switch
+      extensionBuffer.writeln(' switch (this) {');
+      for (final enumElement in visitor.elements) {
+        extensionBuffer.writeln('   case ${visitor.className}.$enumElement:');
+        extensionBuffer.writeln('   return ${enumElement}();');
+      }
+      extensionBuffer.writeln('   }');
 
-    extensionBuffer.writeln(' }');
+      extensionBuffer.writeln(' }');
+    }
+
+    // maybe map method
+    final canMaybeMap = annotation.read('enableMaybeMap').boolValue;
+    if (canMaybeMap) {
+      extensionBuffer.writeln('TResult maybeMap<TResult>({');
+      for (final enumElement in visitor.elements) {
+        extensionBuffer.writeln('TResult Function()? $enumElement,');
+      }
+      extensionBuffer.writeln('required TResult Function() orElse,');
+      extensionBuffer.writeln('}) {');
+
+      // enum switch
+      // start switch
+      extensionBuffer.writeln(' switch (this) {');
+      for (final enumElement in visitor.elements) {
+        // case
+        extensionBuffer.writeln('   case ${visitor.className}.$enumElement:');
+        extensionBuffer.writeln('   if (${enumElement} != null) return ${enumElement}();');
+        extensionBuffer.writeln('   break;');
+      }
+      // end switch
+      extensionBuffer.writeln('   }');
+      // fallback
+      extensionBuffer.writeln('return orElse();');
+      // end maybeMap
+      extensionBuffer.writeln(' }');
+    }
 
     // end the extension
     extensionBuffer.writeln('}');

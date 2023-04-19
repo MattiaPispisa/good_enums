@@ -6,6 +6,7 @@ class GoodEnum {
   const GoodEnum({
     this.prefix = 'is',
     this.enableMap = true,
+    this.enableMaybeMap = true,
   });
 
   /// prefix compare utility
@@ -13,6 +14,9 @@ class GoodEnum {
 
   /// enable/disable map method
   final bool enableMap;
+
+  /// enable/disable maybeMap method
+  final bool enableMaybeMap;
 }
 
 /// default GoodEnums instance
