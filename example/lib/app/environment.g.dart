@@ -19,7 +19,7 @@ extension GoodEnvironment on Environment {
     return this == Environment.stage;
   }
 
-  TResult map<TResult>({
+  TResult ifIs<TResult>({
     required TResult Function() dev,
     required TResult Function() prod,
     required TResult Function() stage,
@@ -34,7 +34,7 @@ extension GoodEnvironment on Environment {
     }
   }
 
-  TResult maybeMap<TResult>({
+  TResult maybeIfIs<TResult>({
     TResult Function()? dev,
     TResult Function()? prod,
     TResult Function()? stage,
@@ -68,7 +68,7 @@ extension GoodEnvironmentLessGood on EnvironmentLessGood {
     return this == EnvironmentLessGood.stage;
   }
 
-  TResult maybeMap<TResult>({
+  TResult maybeIfIs<TResult>({
     TResult Function()? dev,
     TResult Function()? prod,
     TResult Function()? stage,

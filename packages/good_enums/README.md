@@ -1,69 +1,135 @@
 # Good Enums
 
-[![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
-[![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
-[![License: MIT][license_badge]][license_link]
+Code generator to make enums easier to use. Annotations lib [here](https://pub.dev/packages/good_enums_annotations).
 
-Good enum code generation
+## Setup
 
-## Installation 💻
-
-**❗ In order to start using Good Enums you must have the [Dart SDK][dart_install_link] installed on your machine.**
-
-Add `good_enums` to your `pubspec.yaml`:
+See the [example](https://github.com/MattiaPispisa/good_enums/tree/main/example) for the configuration.
 
 ```yaml
 dependencies:
+  flutter:
+    sdk: flutter
+  good_enums_annotations:
+
+dev_dependencies:
+  build_runner:
   good_enums:
 ```
 
-Install it:
+## Example
 
-```sh
-dart pub get
+Annotate the enum.
+
+```dart
+import 'package:good_enums_annotations/good_enums_annotations.dart';
+part 'environment.g.dart';
+
+@goodEnum
+enum Environment {
+  dev,
+  prod,
+  stage;
+}
 ```
 
----
+Functions created:
 
-## Continuous Integration 🤖
+- For each field an `isField` method
 
-Good Enums comes with a built-in [GitHub Actions workflow][github_actions_link] powered by [Very Good Workflows][very_good_workflows_link] but you can also add your preferred CI/CD solution.
-
-Out of the box, on each pull request and push, the CI `formats`, `lints`, and `tests` the code. This ensures the code remains consistent and behaves correctly as you add functionality or make changes. The project uses [Very Good Analysis][very_good_analysis_link] for a strict set of analysis options used by our team. Code coverage is enforced using the [Very Good Workflows][very_good_coverage_link].
-
----
-
-## Running Tests 🧪
-
-To run all unit tests:
-
-```sh
-dart pub global activate coverage 1.2.0
-dart test --coverage=coverage
-dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info
+```dart
+if (environment.isDev()) {
+  // do
+  return;
+}
+// else
 ```
 
-To view the generated coverage report you can use [lcov](https://github.com/linux-test-project/lcov).
+- Method `ifIs` with a callback for each enum field:
 
-```sh
-# Generate Coverage Report
-genhtml coverage/lcov.info -o coverage/
-
-# Open Coverage Report
-open coverage/index.html
+```dart
+return environment.ifIs(
+          dev: () => Text("IsDev"),
+          prod: () => Text("IsProd"),
+          stage: () => Text("IsStage"),
+        );
 ```
 
-[dart_install_link]: https://dart.dev/get-dart
-[github_actions_link]: https://docs.github.com/en/actions/learn-github-actions
-[license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[license_link]: https://opensource.org/licenses/MIT
-[logo_black]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_black.png#gh-light-mode-only
-[logo_white]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_white.png#gh-dark-mode-only
-[mason_link]: https://github.com/felangel/mason
-[very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
-[very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
-[very_good_coverage_link]: https://github.com/marketplace/actions/very-good-coverage
-[very_good_ventures_link]: https://verygood.ventures
-[very_good_ventures_link_light]: https://verygood.ventures#gh-light-mode-only
-[very_good_ventures_link_dark]: https://verygood.ventures#gh-dark-mode-only
-[very_good_workflows_link]: https://github.com/VeryGoodOpenSource/very_good_workflows
+- Method `maybeIfIs` with an **optional** callback for each enum field and an else case:
+
+```dart
+return environment.maybeIfIs(
+          dev: () => Text("IsDev"),
+          orElse: () => Text("IsElse"),
+        );
+```
+
+Code generated:
+
+```dart
+extension GoodEnvironment on Environment {
+  bool isDev() {
+    return this == Environment.dev;
+  }
+
+  bool isProd() {
+    return this == Environment.prod;
+  }
+
+  bool isStage() {
+    return this == Environment.stage;
+  }
+
+  TResult ifIs<TResult>({
+    required TResult Function() dev,
+    required TResult Function() prod,
+    required TResult Function() stage,
+  }) {
+    switch (this) {
+      case Environment.dev:
+        return dev();
+      case Environment.prod:
+        return prod();
+      case Environment.stage:
+        return stage();
+    }
+  }
+
+  TResult maybeIfIs<TResult>({
+    TResult Function()? dev,
+    TResult Function()? prod,
+    TResult Function()? stage,
+    required TResult Function() orElse,
+  }) {
+    switch (this) {
+      case Environment.dev:
+        if (dev != null) return dev();
+        break;
+      case Environment.prod:
+        if (prod != null) return prod();
+        break;
+      case Environment.stage:
+        if (stage != null) return stage();
+        break;
+    }
+    return orElse();
+  }
+}
+
+```
+
+## Settings
+
+`GoodEnum` can be configured.
+
+```dart
+@GoodEnum(
+  // disable/enable isIs method, default: true
+  enableIf: false,
+  // disable/enable maybeIfIs method, default: true
+  enableMaybeIf: false,
+  // customize prefix methods, default `iS`
+  prefix: 'wowASpecialMethod'
+)
+...
+```

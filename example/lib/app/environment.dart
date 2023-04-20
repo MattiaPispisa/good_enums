@@ -10,17 +10,21 @@ enum Environment {
 }
 
 @GoodEnum(
-  enableMap: false,
+  enableIf: false,
 )
 enum EnvironmentLessGood {
   dev,
   prod,
   stage;
+
+  bool ifIs<int>() {
+    return true;
+  }
 }
 
 @GoodEnum(
-  enableMap: false,
-  enableMaybeMap: false,
+  enableIf: false,
+  enableMaybeIf: false,
 )
 enum EnvironmentLessLessGood {
   dev,
@@ -29,8 +33,8 @@ enum EnvironmentLessLessGood {
 }
 
 @GoodEnum(
-  enableMap: false,
-  enableMaybeMap: false,
+  enableIf: false,
+  enableMaybeIf: false,
   prefix: 'wowASpecialMethod'
 )
 enum SpecialEnvironment {

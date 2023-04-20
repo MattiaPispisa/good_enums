@@ -36,12 +36,12 @@ class _HomeState extends State<Home> {
       appBar: AppBar(title: Text("Good Enum example")),
       body: Column(children: [
         Text(environment.isDev() ? "IsDev" : 'IsNotDev'),
-        environment.map(
+        environment.ifIs(
           dev: () => Text("IsDev"),
           prod: () => Text("IsProd"),
           stage: () => Text("IsStage"),
         ),
-        environment.maybeMap(
+        environment.maybeIfIs(
           dev: () => Text("IsDev"),
           orElse: () => Text("IsElse"),
         ),

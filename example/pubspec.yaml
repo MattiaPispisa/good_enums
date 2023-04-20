@@ -7,14 +7,12 @@ environment:
   sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
-  bloc: ^8.1.1
   flutter:
     sdk: flutter
+  good_enums_annotations: "0.1.0"
 
 
 dev_dependencies:
   good_enums: 
     path: ../packages/good_enums
-  good_enums_annotations:
-    path: ../packages/good_enums_annotations
   build_runner:

@@ -20,22 +20,21 @@ class GoodEnumsGenerator extends GeneratorForAnnotation<GoodEnum> {
     final extensionBuffer = StringBuffer();
 
     // start the extension
-    print("AAA ${visitor.elements}");
     extensionBuffer.writeln('extension Good${visitor.className} on ${visitor.className} {');
 
     // compare methods
-    final compareMethodPrefix = annotation.read('prefix').stringValue;
+    final methodsPrefix = annotation.read('prefix').stringValue;
 
     for (final enumElement in visitor.elements) {
-      extensionBuffer.writeln('bool $compareMethodPrefix${enumElement._capitalize()}() {');
+      extensionBuffer.writeln('bool $methodsPrefix${enumElement._capitalize()}() {');
       extensionBuffer.writeln('  return this == ${visitor.className}.$enumElement;');
       extensionBuffer.writeln('}');
     }
 
     // map method
-    final canMap = annotation.read('enableMap').boolValue;
-    if (canMap) {
-      extensionBuffer.writeln('TResult map<TResult>({');
+    final canIf = annotation.read('enableIf').boolValue;
+    if (canIf) {
+      extensionBuffer.writeln('TResult if${methodsPrefix._capitalize()}<TResult>({');
       for (final enumElement in visitor.elements) {
         extensionBuffer.writeln('required TResult Function() $enumElement,');
       }
@@ -53,9 +52,9 @@ class GoodEnumsGenerator extends GeneratorForAnnotation<GoodEnum> {
     }
 
     // maybe map method
-    final canMaybeMap = annotation.read('enableMaybeMap').boolValue;
-    if (canMaybeMap) {
-      extensionBuffer.writeln('TResult maybeMap<TResult>({');
+    final canMaybeIf = annotation.read('enableMaybeIf').boolValue;
+    if (canMaybeIf) {
+      extensionBuffer.writeln('TResult maybeIf${methodsPrefix._capitalize()}<TResult>({');
       for (final enumElement in visitor.elements) {
         extensionBuffer.writeln('TResult Function()? $enumElement,');
       }
