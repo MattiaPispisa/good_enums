@@ -125,11 +125,11 @@ extension GoodEnvironment on Environment {
 ```dart
 @GoodEnum(
   // disable/enable isIs method, default: true
-  enableIf: false,
+  enableIf: true,
   // disable/enable maybeIfIs method, default: true
-  enableMaybeIf: false,
+  enableMaybeIf: true,
   // customize prefix methods, default `iS`
-  prefix: 'wowASpecialMethod'
+  prefix: 'iS'
 )
 ...
 ```
