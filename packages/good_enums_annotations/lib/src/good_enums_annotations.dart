@@ -5,18 +5,18 @@ class GoodEnum {
   /// {@macro good_enums_annotations}
   const GoodEnum({
     this.prefix = 'is',
-    this.enableMap = true,
-    this.enableMaybeMap = true,
+    this.enableIf = true,
+    this.enableMaybeIf = true,
   });
 
-  /// prefix compare utility
+  /// utilities prefix
   final String prefix;
 
-  /// enable/disable map method
-  final bool enableMap;
+  /// enable/disable if method
+  final bool enableIf;
 
-  /// enable/disable maybeMap method
-  final bool enableMaybeMap;
+  /// enable/disable maybeIf method
+  final bool enableMaybeIf;
 }
 
 /// default GoodEnums instance
