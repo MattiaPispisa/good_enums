@@ -4,15 +4,14 @@ version: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  good_enums_annotations: "0.1.0"
+  good_enums_annotations: ^0.1.0
 
 
 dev_dependencies:
-  good_enums: 
-    path: ../packages/good_enums
+  good_enums: ^0.1.0
   build_runner:
