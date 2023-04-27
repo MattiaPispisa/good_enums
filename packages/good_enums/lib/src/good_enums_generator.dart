@@ -20,21 +20,31 @@ class GoodEnumsGenerator extends GeneratorForAnnotation<GoodEnum> {
     final extensionBuffer = StringBuffer();
 
     // start the extension
-    extensionBuffer.writeln('extension Good${visitor.className} on ${visitor.className} {');
+    extensionBuffer.writeln(
+        'extension Good${visitor.className} on ${visitor.className} {');
 
     // compare methods
     final methodsPrefix = annotation.read('prefix').stringValue;
+    final valueCheckAsGetter = annotation.read('valueCheckAsGetter').boolValue;
 
     for (final enumElement in visitor.elements) {
-      extensionBuffer.writeln('bool $methodsPrefix${enumElement._capitalize()}() {');
-      extensionBuffer.writeln('  return this == ${visitor.className}.$enumElement;');
+      if (valueCheckAsGetter) {
+        extensionBuffer
+            .writeln('bool get $methodsPrefix${enumElement._capitalize()} {');
+      } else {
+        extensionBuffer
+            .writeln('bool $methodsPrefix${enumElement._capitalize()}() {');
+      }
+      extensionBuffer
+          .writeln('  return this == ${visitor.className}.$enumElement;');
       extensionBuffer.writeln('}');
     }
 
     // map method
     final canIf = annotation.read('enableIf').boolValue;
     if (canIf) {
-      extensionBuffer.writeln('TResult if${methodsPrefix._capitalize()}<TResult>({');
+      extensionBuffer
+          .writeln('TResult if${methodsPrefix._capitalize()}<TResult>({');
       for (final enumElement in visitor.elements) {
         extensionBuffer.writeln('required TResult Function() $enumElement,');
       }
@@ -54,7 +64,8 @@ class GoodEnumsGenerator extends GeneratorForAnnotation<GoodEnum> {
     // maybe map method
     final canMaybeIf = annotation.read('enableMaybeIf').boolValue;
     if (canMaybeIf) {
-      extensionBuffer.writeln('TResult maybeIf${methodsPrefix._capitalize()}<TResult>({');
+      extensionBuffer
+          .writeln('TResult maybeIf${methodsPrefix._capitalize()}<TResult>({');
       for (final enumElement in visitor.elements) {
         extensionBuffer.writeln('TResult Function()? $enumElement,');
       }
@@ -67,7 +78,8 @@ class GoodEnumsGenerator extends GeneratorForAnnotation<GoodEnum> {
       for (final enumElement in visitor.elements) {
         // case
         extensionBuffer.writeln('   case ${visitor.className}.$enumElement:');
-        extensionBuffer.writeln('   if (${enumElement} != null) return ${enumElement}();');
+        extensionBuffer
+            .writeln('   if (${enumElement} != null) return ${enumElement}();');
         extensionBuffer.writeln('   break;');
       }
       // end switch
@@ -86,5 +98,6 @@ class GoodEnumsGenerator extends GeneratorForAnnotation<GoodEnum> {
 }
 
 extension _StringExtension on String {
-  String _capitalize() => "${this.isNotEmpty ? this[0].toUpperCase() : ''}${this.length > 1 ? this.substring(1) : ''}";
+  String _capitalize() =>
+      "${this.isNotEmpty ? this[0].toUpperCase() : ''}${this.length > 1 ? this.substring(1) : ''}";
 }

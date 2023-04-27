@@ -1,0 +1,25 @@
+name: example
+description: Good enums example
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  good_enums_annotations: 
+    path: ../../good_enums_annotations
+
+
+dev_dependencies:
+  good_enums: 
+    path: ../
+  build_runner:
+
+dependency_overrides:
+  good_enums: 
+    path: ../
+  good_enums_annotations: 
+    path: ../../good_enums_annotations

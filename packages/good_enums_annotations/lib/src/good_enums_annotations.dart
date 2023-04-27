@@ -7,6 +7,7 @@ class GoodEnum {
     this.prefix = 'is',
     this.enableIf = true,
     this.enableMaybeIf = true,
+    this.valueCheckAsGetter = false,
   });
 
   /// utilities prefix
@@ -17,6 +18,22 @@ class GoodEnum {
 
   /// enable/disable maybeIf method
   final bool enableMaybeIf;
+
+  /// ```dart
+  /// enum Env {
+  ///   dev,
+  /// }
+  /// ```
+  /// with `valueCheckAsGetter=true`
+  /// ```dart
+  /// env.isDev
+  /// ```
+  ///
+  /// with `valueCheckAsGetter=false`
+  /// ```dart
+  /// env.isDev()
+  /// ```
+  final bool valueCheckAsGetter;
 }
 
 /// default GoodEnums instance

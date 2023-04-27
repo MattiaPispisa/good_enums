@@ -45,6 +45,15 @@ if (environment.isDev()) {
 // else
 ```
 
+if `valueCheckAsGetter` is set to `true`
+```dart
+if (environment.isDev) {
+  // do
+  return;
+}
+// else
+```
+
 - Method `ifIs` with a callback for each enum field:
 
 ```dart
@@ -130,6 +139,7 @@ extension GoodEnvironment on Environment {
   enableMaybeIf: true,
   // customize prefix methods, default `iS`
   prefix: 'iS'
+  valueCheckAsGetter:false,
 )
 ...
 ```

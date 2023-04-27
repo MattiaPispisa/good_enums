@@ -11,6 +11,7 @@ enum Environment {
 
 @GoodEnum(
   enableIf: false,
+  valueCheckAsGetter: true,
 )
 enum EnvironmentLessGood {
   dev,
@@ -32,14 +33,9 @@ enum EnvironmentLessLessGood {
   stage;
 }
 
-@GoodEnum(
-  enableIf: false,
-  enableMaybeIf: false,
-  prefix: 'wowASpecialMethod'
-)
+@GoodEnum(enableIf: false, enableMaybeIf: false, prefix: 'wowASpecialMethod')
 enum SpecialEnvironment {
   dev,
   prod,
   stage;
 }
-

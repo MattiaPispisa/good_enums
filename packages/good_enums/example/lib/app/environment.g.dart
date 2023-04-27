@@ -56,15 +56,15 @@ extension GoodEnvironment on Environment {
 }
 
 extension GoodEnvironmentLessGood on EnvironmentLessGood {
-  bool isDev() {
+  bool get isDev {
     return this == EnvironmentLessGood.dev;
   }
 
-  bool isProd() {
+  bool get isProd {
     return this == EnvironmentLessGood.prod;
   }
 
-  bool isStage() {
+  bool get isStage {
     return this == EnvironmentLessGood.stage;
   }
 

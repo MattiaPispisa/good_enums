@@ -193,19 +193,17 @@ packages:
   good_enums:
     dependency: "direct dev"
     description:
-      name: good_enums
-      sha256: "3cd1dbaed22b1e0e431c432f2208a3a76d53905880ac0f217507e0523b2bdcf9"
-      url: "https://pub.dev"
-    source: hosted
+      path: ".."
+      relative: true
+    source: path
     version: "0.1.0"
   good_enums_annotations:
     dependency: "direct main"
     description:
-      name: good_enums_annotations
-      sha256: "82c67099ba70a0115dc6469ab640914684fd32331f3eec4dd302377b7127f6a1"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.0"
+      path: "../../good_enums_annotations"
+      relative: true
+    source: path
+    version: "0.1.1"
   graphs:
     dependency: transitive
     description:
